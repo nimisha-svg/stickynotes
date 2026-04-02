@@ -1,0 +1,349 @@
+:root {
+  --bg-color: #f0f2f5;
+  --header-bg: #ffffff;
+  --text-main: #333333;
+  --accent-color: #4a90e2;
+  --line-height: 28px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.sidepanel-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+.header {
+  padding: 14px 20px;
+  background: var(--header-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  z-index: 10;
+}
+
+.header h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: -0.3px;
+}
+
+.add-btn {
+  background-color: #2c2c2c;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+  background-color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.notes-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-auto-rows: min-content;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Base Sticky Note Style */
+.sticky-note {
+  position: relative;
+  min-height: 220px;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden; /* Keep pseudo elements inside */
+}
+
+.sticky-note:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.sticky-note textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  resize: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 15px;
+  color: #2c3e50;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  /* Crucial for aligning text with CSS background lines */
+  line-height: var(--line-height); 
+  padding: 0 15px 15px 15px;
+}
+
+.sticky-note textarea::-webkit-scrollbar {
+  width: 4px;
+}
+.sticky-note textarea::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+/* Action Buttons Container */
+.note-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sticky-note:hover .note-actions {
+  opacity: 1;
+}
+
+.action-btn {
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(0,0,0,0.05);
+  backdrop-filter: blur(4px);
+  border-radius: 4px;
+  color: #555;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: white;
+  color: #000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.action-btn.delete-btn:hover {
+  color: #e53935;
+}
+
+/* --- THEME IMPLEMENTATIONS --- */
+
+/* 1. White Memo (Grid) */
+.theme-white-memo {
+  background-color: #ffffff;
+  background-image: 
+    linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 14px 14px;
+  background-position: -1px -1px;
+}
+.theme-white-memo::before {
+  content: "♥ MEMO";
+  display: block;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 5px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: #333;
+}
+.theme-white-memo textarea { padding-top: 5px; }
+
+/* 2. Pink To-Do List */
+.theme-todo-pink {
+  background-color: #fce4e4;
+  background-image: repeating-linear-gradient(transparent, transparent calc(var(--line-height) - 1px), #f4b6b6 calc(var(--line-height) - 1px), #f4b6b6 var(--line-height));
+  background-position: 0 42px; /* Offset lines below header */
+}
+.theme-todo-pink::before {
+  content: "♥ TO DO LIST";
+  display: block;
+  text-align: center;
+  padding-top: 16px;
+  padding-bottom: 4px;
+  font-weight: bold;
+  font-size: 12px;
+  color: #e07a7a;
+  letter-spacing: 0.5px;
+}
+.theme-todo-pink textarea { padding-top: 8px; }
+
+/* 3. Teal Spiral */
+.theme-spiral-teal {
+  background-color: #a3d0c9;
+  background-image: repeating-linear-gradient(transparent, transparent calc(var(--line-height) - 1px), rgba(255,255,255,0.6) calc(var(--line-height) - 1px), rgba(255,255,255,0.6) var(--line-height));
+  background-position: 0 10px;
+  border-left: 24px solid rgba(0,0,0,0.04);
+}
+.theme-spiral-teal::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 10px;
+  bottom: 0;
+  width: 16px;
+  background-image: radial-gradient(circle, #fff 5px, transparent 6px);
+  background-size: 16px var(--line-height);
+  background-repeat: repeat-y;
+  z-index: 1;
+}
+.theme-spiral-teal::after {
+  content: "✿";
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  color: #e67c82;
+  font-size: 26px;
+  transform: rotate(15deg);
+  opacity: 0.8;
+  pointer-events: none;
+}
+.theme-spiral-teal textarea { 
+  padding-left: 35px; 
+  padding-top: 10px;
+  color: #224c46;
+}
+
+/* 4. Yellow Checklist */
+.theme-yellow-checklist {
+  background-color: #fdf2c8;
+  background-image: 
+    linear-gradient(90deg, transparent 39px, #e89595 39px, #e89595 40px, transparent 40px),
+    repeating-linear-gradient(transparent, transparent calc(var(--line-height) - 1px), #a9c6d9 calc(var(--line-height) - 1px), #a9c6d9 var(--line-height));
+  background-position: 0 42px;
+}
+.theme-yellow-checklist::before {
+  content: "CHECK LIST";
+  display: block;
+  text-align: center;
+  padding-top: 16px;
+  padding-bottom: 4px;
+  font-weight: bold;
+  font-size: 12px;
+  color: #5c839c;
+  letter-spacing: 1px;
+}
+.theme-yellow-checklist textarea { 
+  padding-left: 48px; 
+  padding-top: 8px;
+}
+
+/* 5. Dark Grid */
+.theme-dark-grid {
+  background-color: #5c5f60;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: -1px -1px;
+}
+.theme-dark-grid textarea {
+  color: #f0f0f0;
+  padding-top: 15px;
+}
+.theme-dark-grid .action-btn {
+  background: rgba(0,0,0,0.3);
+  color: #ccc;
+  border-color: rgba(255,255,255,0.1);
+}
+.theme-dark-grid .action-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+/* 6. Lavender Lined */
+.theme-lavender-lined {
+  background-color: #d7d7f7;
+  background-image: repeating-linear-gradient(transparent, transparent calc(var(--line-height) - 1px), #db6c72 calc(var(--line-height) - 1px), #db6c72 var(--line-height));
+  background-position: 0 10px;
+}
+.theme-lavender-lined::before {
+  content: "NO.";
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-weight: bold;
+  font-size: 11px;
+  color: #db6c72;
+}
+.theme-lavender-lined textarea {
+  padding-top: 38px; /* Start below the NO. */
+  color: #4a4a7a;
+}
+
+
+/* Utilities */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  grid-column: 1 / -1;
+  height: 60vh;
+  text-align: center;
+  color: #888;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #666;
+}
+
+/* Custom Scrollbar */
+.notes-grid::-webkit-scrollbar {
+  width: 8px;
+}
+.notes-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+.notes-grid::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 10px;
+}
+.notes-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.25);
+}

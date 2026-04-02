@@ -1,0 +1,1 @@
+(()=>{console.log("[Sticky Notes] Background script initialized");typeof chrome<"u"&&chrome.sidePanel&&chrome.sidePanel.setPanelBehavior&&chrome.sidePanel.setPanelBehavior({openPanelOnActionClick:!0}).catch(e=>console.error("Error setting panel behavior:",e));chrome.runtime.onInstalled.addListener(()=>{console.log("[Sticky Notes] Extension installed")});})();
